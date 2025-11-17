@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Gerenciador de Cursos — Frontend</title>
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --muted: #9aa6b2;
+            --accent: #F4322E;
+            --accent-2: #ff6b61;
+            --glass: rgba(255, 255, 255, 0.03);
+            --success: #16a34a;
+            --danger: #ef4444;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color-scheme: dark;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #071021 0%, #081325 60%);
+            color: #e6eef6;
+            padding: 20px;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 20px
+        }
+
+        .base-url {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 13px;
+            background: var(--glass);
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 20px;
+            min-height: 60vh;
+        }
+
+        nav {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .tab {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 6px;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.02)
+        }
+
+        .tab.active {
+            background: linear-gradient(90deg, rgba(244, 50, 46, 0.12), rgba(244, 50, 46, 0.05));
+            box-shadow: 0 4px 18px rgba(244, 50, 46, 0.06);
+        }
+
+        main {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            padding: 16px;
+            border-radius: 12px;
+            min-height: 400px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 10px;
+            color: inherit;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: 0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button.ghost {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            padding: 12px;
+            border-radius: 10px;
+            min-height: 80px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px 6px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
+            font-size: 13px;
+        }
+
+        td.actions {
+            display: flex;
+            gap: 8px
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 12px
+        }
+
+        .status-ok {
+            color: var(--success)
+        }
+
+        .status-err {
+            color: var(--danger)
+        }
+
+        .message {
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 10px
+        }
+
+        .message.info {
+            background: rgba(255, 255, 255, 0.02)
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.06);
+            color: #ffcccc
+        }
+
+        footer {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        /* responsive */
+        @media (max-width:900px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding-bottom: 40px
+            }
+
+            nav {
+                order: 2
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Gerenciador de Cursos — Frontend</h1>
+        <div class="base-url" id="baseUrlDisplay">Backend: https://gerenciador-de-cursos.onrender.com/</div>
+    </header>
+
+    <div class="container">
+        <nav>
+            <div class="tab active" data-resource="cursos">📚 Cursos</div>
+            <div class="tab" data-resource="alunos">🧑‍🎓 Alunos</div>
+            <div class="tab" data-resource="professores">👨‍🏫 Professores</div>
+            <div class="tab" data-resource="disciplinas">📘 Disciplinas</div>
+
+            <hr style="border:none;height:1px;background:rgba(255,255,255,0.02);margin:12px 0">
+            <div class="small">Instruções rápidas</div>
+            <ul class="small" style="padding-left:18px">
+                <li>Use as abas para trocar de recurso.</li>
+                <li>Clique em "Novo" para abrir formulário de criação.</li>
+                <li>Campos validados conforme a API (ex.: nome mínimo 2 caracteres).</li>
+            </ul>
+        </nav>
+
+        <main>
+            <div id="messages"></div>
+
+            <div class="toolbar">
+                <input type="text" id="searchInput" placeholder="Buscar (nome / email / descrição)..." style="flex:1" />
+                <select id="sortSelect" title="Ordenar">
+                    <option value="id">Ordenar por ID</option>
+                    <option value="nome">Ordenar por Nome</option>
+                </select>
+                <button id="searchBtn" class="ghost">🔎 Buscar</button>
+                <button id="newBtn">➕ Novo</button>
+                <button id="refreshBtn" class="ghost">⟳ Atualizar</button>
+            </div>
+
+            <section id="listSection">
+                <!-- dynamic content -->
+            </section>
+
+            <section id="formSection" style="display:none;margin-top:12px">
+                <div class="card">
+                    <h3 id="formTitle">Novo</h3>
+                    <form id="resourceForm">
+                        <div id="formFields" style="display:grid;gap:10px"></div>
+                        <div style="margin-top:10px; display:flex; gap:8px;">
+                            <button type="submit" id="saveBtn">Salvar</button>
+                            <button type="button" id="cancelBtn" class="ghost">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <footer>
+                UI simples | Consumindo API disponível em <span
+                    class="muted">https://gerenciador-de-cursos.onrender.com/</span><br>
+                Especificação usada como referência: arquivo OpenAPI anexado. :contentReference[oaicite:1]{index=1}
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        /*
+          Single-file frontend for the provided API.
+          - Base URL:
+            https://gerenciador-de-cursos.onrender.com/
+          - API specification used as reference (endpoints / models).
+            See referenced OpenAPI file. :contentReference[oaicite:2]{index=2}
+        */
+
+        const BASE = 'https://gerenciador-de-cursos.onrender.com';
+        const resources = {
+            cursos: {
+                label: 'Cursos',
+                path: '/cursos',
+                searchPath: '/cursos/search',
+                // fields to show in list and create/edit form
+                fields: [
+                    { name: 'id', label: 'ID', type: 'number', readOnly: true },
+                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
+                    { name: 'descricao', label: 'Descrição', type: 'textarea', required: true, min: 2, max: 200 },
+                    { name: 'cargaHoraria', label: 'Carga Horária', type: 'number', required: false },
+                    // professor is an object with id/nome; here we'll use professor.id for simplicity
+                    { name: 'professorId', label: 'Professor (ID)', type: 'number', required: false }
+                ]
+            },
+            alunos: {
+                label: 'Alunos',
+                path: '/alunos',
+                searchPath: '/alunos/search',
+                fields: [
+                    { name: 'id', label: 'ID', type: 'number', readOnly: true },
+                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
+                    { name: 'email', label: 'Email', type: 'text', required: true },
+                    { name: 'sexo', label: 'Sexo', type: 'select', options: ['MASCULINO', 'FEMININO'], required: true }
+                ]
+            },
+            professores: {
+                label: 'Professores',
+                path: '/professores',
+                searchPath: '/professores/search',
+                fields: [
+                    { name: 'id', label: 'ID', type: 'number', readOnly: true },
+                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
+                    { name: 'email', label: 'Email', type: 'text', required: true }
+                ]
+            },
+            disciplinas: {
+                label: 'Disciplinas',
+                path: '/disciplinas',
+                searchPath: '/disciplinas/search',
+                fields: [
+                    { name: 'id', label: 'ID', type: 'number', readOnly: true },
+                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
+                    { name: 'descricao', label: 'Descrição', type: 'textarea', required: true, min: 2, max: 200 },
+                    { name: 'cargaHoraria', label: 'Carga Horária', type: 'number', required: false }
+                ]
+            }
+        };
+
+        let state = {
+            resource: 'cursos',
+            list: [],
+            editing: null, // object being edited (or null)
+            page: 1,
+            size: 50
+        };
+
+        const el = sel => document.querySelector(sel);
+        const els = sel => document.querySelectorAll(sel);
+
+        function showMessage(msg, type = 'info', timeout = 4000) {
+            const m = document.createElement('div');
+            m.className = 'message ' + (type === 'error' ? 'error' : 'info');
+            m.textContent = msg;
+            const container = el('#messages');
+            container.appendChild(m);
+            setTimeout(() => m.remove(), timeout);
+        }
+
+        function clearMessages() { el('#messages').innerHTML = '' }
+
+        function setActiveTab(name) {
+            state.resource = name;
+            els('.tab').forEach(t => t.classList.toggle('active', t.dataset.resource === name));
+            el('#searchInput').value = '';
+            el('#formSection').style.display = 'none';
+            state.editing = null;
+            loadList();
+        }
+
+        function buildListHTML(items) {
+            const cfg = resources[state.resource];
+            // build table
+            if (!items || items.length === 0) {
+                return `<div class="hint">Nenhum ${cfg.label.toLowerCase()} encontrado.</div>`;
+            }
+            let html = `<table><thead><tr>`;
+            // use keys from first item
+            const cols = ['id', 'nome'];
+            // try to derive columns from config fields
+            cfg.fields.slice(0, 4).forEach(f => {
+                if (f.name !== 'professorId') html += `<th>${f.label}</th>`;
+            });
+            html += `<th>Ações</th></tr></thead><tbody>`;
+            items.forEach(it => {
+                html += `<tr>`;
+                cfg.fields.forEach(f => {
+                    if (f.name === 'professorId') return; // skip internal
+                    let val = it[f.name];
+                    if (f.name === 'cargaHoraria' && val == null) val = '';
+                    if (typeof val === 'object' && val !== null) {
+                        // try to show nested professor nome
+                        if (val.nome) val = val.nome;
+                        else val = JSON.stringify(val);
+                    }
+                    html += `<td>${(val === undefined || val === null) ? '' : escapeHTML(String(val))}</td>`;
+                });
+                html += `<td class="actions">
+      <button class="ghost" data-action="view" data-id="${it.id}">Ver</button>
+      <button class="ghost" data-action="edit" data-id="${it.id}">Editar</button>
+      <button class="ghost" data-action="delete" data-id="${it.id}" style="border-color:rgba(255,0,0,0.12);color:var(--danger)">Excluir</button>
+    </td></tr>`;
+            });
+            html += `</tbody></table>`;
+            return html;
+        }
+
+        function renderList() {
+            const section = el('#listSection');
+            section.innerHTML = '';
+            const cfg = resources[state.resource];
+            const header = document.createElement('div');
+            header.style.display = 'flex';
+            header.style.alignItems = 'center';
+            header.style.justifyContent = 'space-between';
+            header.style.marginBottom = '8px';
+            header.innerHTML = `<div style="display:flex;gap:12px;align-items:center">
+      <div class="badge">${cfg.label}</div>
+      <div class="small muted">Registros: ${state.list.length}</div>
+    </div>
+    <div class="small muted">API: ${cfg.path}</div>`;
+            section.appendChild(header);
+
+            const listWrap = document.createElement('div');
+            listWrap.innerHTML = buildListHTML(state.list);
+            section.appendChild(listWrap);
+
+            // wire action buttons
+            listWrap.querySelectorAll('button[data-action]').forEach(btn => {
+                btn.addEventListener('click', async (ev) => {
+                    const act = btn.dataset.action;
+                    const id = btn.dataset.id;
+                    if (act === 'view') return viewItem(id);
+                    if (act === 'edit') return editItem(id);
+                    if (act === 'delete') {
+                        if (!confirm('Confirma exclusão?')) return;
+                        await deleteItem(id);
+                    }
+                });
+            });
+        }
+
+        function escapeHTML(s) { return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+        /* --- CRUD / API helpers --- */
+
+        async function apiFetch(path, options = {}) {
+            const url = BASE + path;
+            try {
+                const resp = await fetch(url, Object.assign({
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    // credentials: 'include' // uncomment if backend needs cookies/auth
+                }, options));
+                if (resp.status === 204) return null;
+                const text = await resp.text();
+                // try parse JSON
+                try {
+                    const json = text ? JSON.parse(text) : null;
+                    if (!resp.ok) {
+                        const msg = (typeof json === 'string' ? json : (json && json.message) ? json.message : `HTTP ${resp.status}`);
+                        throw new Error(msg);
+                    }
+                    return json;
+                } catch (parseErr) {
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    // non-json but ok
+                    return text;
+                }
+            } catch (err) {
+                throw err;
+            }
+        }
+
+        async function loadList() {
+            clearMessages();
+            const cfg = resources[state.resource];
+            showMessage('Carregando ' + cfg.label + '...', 'info', 1000);
+            try {
+                const q = el('#searchInput').value.trim();
+                const sort = el('#sortSelect').value || 'id';
+                let url = cfg.path;
+                if (q) {
+                    // use searchPath
+                    url = cfg.searchPath + '?q=' + encodeURIComponent(q) + '&page=1&size=' + state.size + '&sort=' + encodeURIComponent(sort);
+                } else {
+                    url += '?'; // some endpoints expect just GET /cursos
+                    // many endpoints in spec return array; we'll call plain GET
+                    // not passing page/size by default because spec's GET /cursos returns all
+                }
+                // If searchPath returns a wrapped response (spec shows objects), we'll handle multiple possible shapes.
+                const data = await apiFetch(url, { method: 'GET' });
+                // Normalize results:
+                let items = [];
+                if (Array.isArray(data)) {
+                    // could be array of Curso or wrapped SearchCursoResponse
+                    // If it's an array with a single SearchResponse object (spec oddity), try to extract.
+                    if (data.length > 0 && data[0].cursos) {
+                        // maybe it's [{ cursos: [...], pagination: ... }]
+                        if (Array.isArray(data[0].cursos)) items = data[0].cursos;
+                    } else {
+                        items = data;
+                    }
+                } else if (data && data.cursos) {
+                    items = data.cursos;
+                } else if (data && data.alunos) {
+                    items = data.alunos;
+                } else if (data && data.disciplinas) {
+                    items = data.disciplinas;
+                } else if (data && data.professores) {
+                    items = data.professores;
+                } else if (data) {
+                    // if it's a single object, push it
+                    items = Array.isArray(data) ? data : [data];
+                } else {
+                    items = [];
+                }
+                state.list = items;
+                renderList();
+                showMessage('Dados carregados', 'info', 1100);
+            } catch (err) {
+                console.error(err);
+                showMessage('Erro ao carregar: ' + err.message, 'error', 6000);
+            }
+        }
+
+        async function viewItem(id) {
+            clearMessages();
+            const cfg = resources[state.resource];
+            try {
+                const data = await apiFetch(cfg.path + '/' + encodeURIComponent(id), { method: 'GET' });
+                // display in a modal-ish card (here we'll reuse formSection)
+                state.editing = null;
+                el('#formSection').style.display = 'block';
+                el('#formTitle').textContent = 'Visualizar ' + cfg.label.slice(0, -1);
+                const fieldsWrap = el('#formFields');
+                fieldsWrap.innerHTML = '';
+                // data may be array or object
+                const item = Array.isArray(data) ? data[0] : data;
+                cfg.fields.forEach(f => {
+                    const val = item ? item[f.name] : '';
+                    const row = document.createElement('div');
+                    row.innerHTML = `<label class="small">${f.label}</label><div class="muted">${escapeHTML(String(val === undefined || val === null ? '' : val))}</div>`;
+                    fieldsWrap.appendChild(row);
+                });
+                el('#saveBtn').style.display = 'none';
+            } catch (err) {
+                showMessage('Erro ao buscar item: ' + err.message, 'error', 5000);
+            }
+        }
+
+        function buildFormFields(item = null) {
+            const cfg = resources[state.resource];
+            const wrap = el('#formFields');
+            wrap.innerHTML = '';
+            cfg.fields.forEach(f => {
+                const v = item && item[f.name] !== undefined ? item[f.name] : (f.default || '');
+                const fieldRow = document.createElement('div');
+                fieldRow.style.display = 'grid';
+                fieldRow.style.gridTemplateColumns = '1fr';
+                fieldRow.style.gap = '6px';
+                const label = document.createElement('label');
+                label.textContent = f.label + (f.required ? ' *' : '');
+                label.className = 'small';
+                fieldRow.appendChild(label);
+
+                if (f.type === 'textarea') {
+                    const ta = document.createElement('textarea');
+                    ta.name = f.name;
+                    ta.rows = 3;
+                    ta.value = v || '';
+                    if (f.readOnly) ta.readOnly = true;
+                    fieldRow.appendChild(ta);
+                } else if (f.type === 'select') {
+                    const s = document.createElement('select');
+                    s.name = f.name;
+                    (f.options || []).forEach(opt => {
+                        const o = document.createElement('option');
+                        o.value = opt;
+                        o.textContent = opt;
+                        if (String(v) === String(opt)) o.selected = true;
+                        s.appendChild(o);
+                    });
+                    if (f.readOnly) s.disabled = true;
+                    fieldRow.appendChild(s);
+                } else {
+                    const inp = document.createElement('input');
+                    inp.type = f.type === 'number' ? 'number' : 'text';
+                    inp.name = f.name;
+                    inp.value = (v === null || v === undefined) ? '' : v;
+                    if (f.readOnly) inp.readOnly = true;
+                    if (f.min !== undefined) inp.min = f.min;
+                    if (f.max !== undefined) inp.max = f.max;
+                    fieldRow.appendChild(inp);
+                }
+                wrap.appendChild(fieldRow);
+            });
+        }
+
+        function newItem() {
+            state.editing = null;
+            el('#formSection').style.display = 'block';
+            el('#formTitle').textContent = 'Novo ' + resources[state.resource].label.slice(0, -1);
+            buildFormFields({});
+            el('#saveBtn').style.display = 'inline-block';
+        }
+
+        async function editItem(id) {
+            clearMessages();
+            const cfg = resources[state.resource];
+            try {
+                const data = await apiFetch(cfg.path + '/' + encodeURIComponent(id), { method: 'GET' });
+                const item = Array.isArray(data) ? data[0] : data;
+                state.editing = item;
+                el('#formSection').style.display = 'block';
+                el('#formTitle').textContent = 'Editar ' + cfg.label.slice(0, -1);
+                // adapt nested professor object: map professor.id to professorId
+                const flat = Object.assign({}, item);
+                if (item && item.professor && item.professor.id) flat.professorId = item.professor.id;
+                buildFormFields(flat);
+                el('#saveBtn').style.display = 'inline-block';
+            } catch (err) {
+                showMessage('Erro ao buscar item: ' + err.message, 'error', 5000);
+            }
+        }
+
+        async function deleteItem(id) {
+            clearMessages();
+            const cfg = resources[state.resource];
+            try {
+                await apiFetch(cfg.path + '/' + encodeURIComponent(id), { method: 'DELETE' });
+                showMessage('Excluído com sucesso', 'info', 2500);
+                loadList();
+            } catch (err) {
+                showMessage('Erro ao excluir: ' + err.message, 'error', 6000);
+            }
+        }
+
+        async function submitForm(ev) {
+            ev.preventDefault();
+            clearMessages();
+            const cfg = resources[state.resource];
+            const form = new FormData(el('#resourceForm'));
+            // build payload based on cfg.fields
+            const payload = {};
+            cfg.fields.forEach(f => {
+                if (f.readOnly) return; // don't include readOnly (id)
+                const val = form.get(f.name);
+                if (val === null) return;
+                if (f.type === 'number') {
+                    const num = val === '' ? null : Number(val);
+                    if (num !== null && !isFinite(num)) return;
+                    payload[f.name] = num;
+                } else {
+                    payload[f.name] = val;
+                }
+            });
+
+            // special mapping: professorId -> professor object expected by API (professor: {id: ...})
+            if (payload.professorId !== undefined) {
+                const pid = payload.professorId;
+                if (pid === '' || pid === null) delete payload.professorId;
+                else {
+                    payload.professor = { id: Number(pid) };
+                    delete payload.professorId;
+                }
+            }
+
+            // validation (basic, following the spec constraints)
+            for (const f of cfg.fields) {
+                if (f.required && !payload[f.name] && payload[f.name] !== 0) {
+                    // for 'sexo' the payload key exists (ok), for nested names we do a gentle check
+                    if (f.name === 'sexo' && form.get('sexo')) continue;
+                    if (f.name === 'professorId') continue;
+                    showMessage('Campo obrigatório: ' + f.label, 'error', 4000);
+                    return;
+                }
+                if (f.min && payload[f.name] && String(payload[f.name]).length < f.min) {
+                    showMessage(`${f.label} deve ter ao menos ${f.min} caracteres`, 'error', 4000);
+                    return;
+                }
+            }
+
+            try {
+                if (state.editing && state.editing.id) {
+                    // update
+                    const id = state.editing.id;
+                    // API expects a Curso object in JSON body for PUT /cursos/{id}
+                    await apiFetch(cfg.path + '/' + encodeURIComponent(id), {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    showMessage('Atualizado com sucesso', 'info', 2200);
+                } else {
+                    // create
+                    await apiFetch(cfg.path, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    showMessage('Criado com sucesso', 'info', 2200);
+                }
+                el('#formSection').style.display = 'none';
+                state.editing = null;
+                loadList();
+            } catch (err) {
+                showMessage('Erro ao salvar: ' + err.message, 'error', 6000);
+            }
+        }
+
+        /* --- Wiring UI --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            // tabs
+            els('.tab').forEach(t => {
+                t.addEventListener('click', () => setActiveTab(t.dataset.resource));
+            });
+
+            el('#searchBtn').addEventListener('click', () => loadList());
+            el('#refreshBtn').addEventListener('click', () => loadList());
+            el('#newBtn').addEventListener('click', () => newItem());
+            el('#cancelBtn').addEventListener('click', () => {
+                el('#formSection').style.display = 'none';
+                state.editing = null;
+            });
+            el('#resourceForm').addEventListener('submit', submitForm);
+
+            // quick search on enter
+            el('#searchInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); loadList(); }
+            });
+
+            // initial load
+            loadList();
+        });
+    </script>
+</body>
+
+</html>
