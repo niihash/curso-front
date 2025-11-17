@@ -4,18 +4,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Gerenciador de Cursos — Frontend (corrigido)</title>
+    <title>Gerenciador de Cursos — Frontend (fix alunos)</title>
     <style>
         :root {
             --bg: #0f1724;
-            --card: #0b1220;
             --muted: #9aa6b2;
             --accent: #F4322E;
-            --accent-2: #ff6b61;
             --glass: rgba(255, 255, 255, 0.03);
             --success: #16a34a;
             --danger: #ef4444;
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
             color-scheme: dark;
         }
 
@@ -23,25 +21,19 @@
             box-sizing: border-box
         }
 
-        html,
-        body {
-            height: 100%
-        }
-
         body {
             margin: 0;
-            background: linear-gradient(180deg, #071021 0%, #081325 60%);
-            color: #e6eef6;
             padding: 20px;
-            font-size: 14px;
-            -webkit-font-smoothing: antialiased;
+            background: linear-gradient(180deg, #071021, #081325);
+            color: #e6eef6;
+            font-size: 14px
         }
 
         header {
             display: flex;
-            gap: 16px;
             align-items: center;
-            margin-bottom: 20px;
+            gap: 16px;
+            margin-bottom: 20px
         }
 
         h1 {
@@ -52,23 +44,23 @@
         .base-url {
             margin-left: auto;
             color: var(--muted);
-            font-size: 13px;
             background: var(--glass);
             padding: 6px 10px;
             border-radius: 8px;
+            font-size: 13px
         }
 
         .container {
             display: grid;
             grid-template-columns: 260px 1fr;
             gap: 20px;
-            min-height: 60vh;
+            min-height: 60vh
         }
 
         nav {
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
             border-radius: 12px;
-            padding: 12px;
+            padding: 12px
         }
 
         .tab {
@@ -78,7 +70,7 @@
             padding: 10px;
             border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 6px;
+            margin-bottom: 6px
         }
 
         .tab:hover {
@@ -87,33 +79,31 @@
 
         .tab.active {
             background: linear-gradient(90deg, rgba(244, 50, 46, 0.12), rgba(244, 50, 46, 0.05));
-            box-shadow: 0 4px 18px rgba(244, 50, 46, 0.06);
+            box-shadow: 0 4px 18px rgba(244, 50, 46, 0.06)
         }
 
         main {
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
             padding: 16px;
             border-radius: 12px;
-            min-height: 400px;
+            min-height: 400px
         }
 
         .toolbar {
             display: flex;
             gap: 12px;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 12px
         }
 
-        input[type="text"],
-        input[type="number"],
+        input,
         select,
         textarea {
             background: transparent;
             border: 1px solid rgba(255, 255, 255, 0.06);
             padding: 8px 10px;
             color: inherit;
-            border-radius: 8px;
-            outline: none;
+            border-radius: 8px
         }
 
         button {
@@ -123,31 +113,18 @@
             padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 600
         }
 
         button.ghost {
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 12px;
-        }
-
-        .card {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-            padding: 12px;
-            border-radius: 10px;
-            min-height: 80px;
+            border: 1px solid rgba(255, 255, 255, 0.06)
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 8px;
+            margin-top: 8px
         }
 
         th,
@@ -155,32 +132,12 @@
             text-align: left;
             padding: 8px 6px;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
-            font-size: 13px;
+            font-size: 13px
         }
 
         td.actions {
             display: flex;
             gap: 8px
-        }
-
-        .hint {
-            color: var(--muted);
-            font-size: 13px
-        }
-
-        .badge {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: 12px
-        }
-
-        .status-ok {
-            color: var(--success)
-        }
-
-        .status-err {
-            color: var(--danger)
         }
 
         .message {
@@ -198,27 +155,24 @@
             color: #ffcccc
         }
 
+        .small {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
         footer {
             margin-top: 18px;
             color: var(--muted);
             font-size: 13px
         }
 
-        .small {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .muted {
-            color: var(--muted)
-        }
-
-        /* responsive */
         @media (max-width:900px) {
             .container {
                 grid-template-columns: 1fr;
                 padding-bottom: 40px
             }
+
+            ;
 
             nav {
                 order: 2
@@ -229,8 +183,8 @@
 
 <body>
     <header>
-        <h1>Gerenciador de Cursos — Frontend (corrigido)</h1>
-        <div class="base-url" id="baseUrlDisplay">Backend: https://gerenciador-de-cursos.onrender.com/</div>
+        <h1>Gerenciador de Cursos — Frontend (fix alunos)</h1>
+        <div class="base-url">Backend: https://gerenciador-de-cursos.onrender.com/</div>
     </header>
 
     <div class="container">
@@ -245,7 +199,6 @@
             <ul class="small" style="padding-left:18px">
                 <li>Use as abas para trocar de recurso.</li>
                 <li>Clique em "Novo" para abrir formulário de criação.</li>
-                <li>Campos validados conforme a API (ex.: nome mínimo 2 caracteres).</li>
             </ul>
         </nav>
 
@@ -263,16 +216,15 @@
                 <button id="refreshBtn" class="ghost">⟳ Atualizar</button>
             </div>
 
-            <section id="listSection">
-                <!-- dynamic content -->
-            </section>
+            <section id="listSection"></section>
 
             <section id="formSection" style="display:none;margin-top:12px">
-                <div class="card">
+                <div
+                    style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:10px">
                     <h3 id="formTitle">Novo</h3>
                     <form id="resourceForm">
                         <div id="formFields" style="display:grid;gap:10px"></div>
-                        <div style="margin-top:10px; display:flex; gap:8px;">
+                        <div style="margin-top:10px;display:flex;gap:8px;">
                             <button type="submit" id="saveBtn">Salvar</button>
                             <button type="button" id="cancelBtn" class="ghost">Cancelar</button>
                         </div>
@@ -282,8 +234,7 @@
 
             <footer>
                 UI simples | Consumindo API disponível em <span
-                    class="muted">https://gerenciador-de-cursos.onrender.com/</span><br>
-                Especificação usada como referência: arquivo OpenAPI anexado.
+                    class="small">https://gerenciador-de-cursos.onrender.com/</span>
             </footer>
         </main>
     </div>
@@ -292,71 +243,51 @@
         const BASE = 'https://gerenciador-de-cursos.onrender.com';
         const resources = {
             cursos: {
-                label: 'Cursos',
-                path: '/cursos',
-                searchPath: '/cursos/search',
-                fields: [
+                label: 'Cursos', path: '/cursos', searchPath: '/cursos/search', fields: [
                     { name: 'id', label: 'ID', type: 'number', readOnly: true },
-                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
-                    { name: 'descricao', label: 'Descrição', type: 'textarea', required: true, min: 2, max: 200 },
-                    { name: 'cargaHoraria', label: 'Carga Horária', type: 'number', required: false },
-                    { name: 'professorId', label: 'Professor (ID)', type: 'number', required: false }
+                    { name: 'nome', label: 'Nome', type: 'text', required: true },
+                    { name: 'descricao', label: 'Descrição', type: 'textarea' },
+                    { name: 'cargaHoraria', label: 'Carga Horária', type: 'number' }
                 ]
             },
             alunos: {
-                label: 'Alunos',
-                path: '/alunos',
-                searchPath: '/alunos/search',
-                fields: [
+                label: 'Alunos', path: '/alunos', searchPath: '/alunos/search', fields: [
                     { name: 'id', label: 'ID', type: 'number', readOnly: true },
-                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
+                    { name: 'nome', label: 'Nome', type: 'text', required: true },
                     { name: 'email', label: 'Email', type: 'text', required: true },
-                    { name: 'sexo', label: 'Sexo', type: 'select', options: ['MASCULINO', 'FEMININO'], required: true }
+                    { name: 'sexo', label: 'Sexo', type: 'text' }
                 ]
             },
             professores: {
-                label: 'Professores',
-                path: '/professores',
-                searchPath: '/professores/search',
-                fields: [
+                label: 'Professores', path: '/professores', searchPath: '/professores/search', fields: [
                     { name: 'id', label: 'ID', type: 'number', readOnly: true },
-                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
+                    { name: 'nome', label: 'Nome', type: 'text', required: true },
                     { name: 'email', label: 'Email', type: 'text', required: true }
                 ]
             },
             disciplinas: {
-                label: 'Disciplinas',
-                path: '/disciplinas',
-                searchPath: '/disciplinas/search',
-                fields: [
+                label: 'Disciplinas', path: '/disciplinas', searchPath: '/disciplinas/search', fields: [
                     { name: 'id', label: 'ID', type: 'number', readOnly: true },
-                    { name: 'nome', label: 'Nome', type: 'text', required: true, min: 2, max: 100 },
-                    { name: 'descricao', label: 'Descrição', type: 'textarea', required: true, min: 2, max: 200 },
-                    { name: 'cargaHoraria', label: 'Carga Horária', type: 'number', required: false }
+                    { name: 'nome', label: 'Nome', type: 'text', required: true },
+                    { name: 'descricao', label: 'Descrição', type: 'textarea' }
                 ]
             }
         };
 
-        let state = {
-            resource: 'cursos',
-            list: [],
-            editing: null,
-            page: 1,
-            size: 50
-        };
+        let state = { resource: 'cursos', list: [], editing: null, page: 1, size: 50 };
 
-        const el = sel => document.querySelector(sel);
-        const els = sel => document.querySelectorAll(sel);
+        const el = s => document.querySelector(s);
+        const els = s => document.querySelectorAll(s);
 
         function showMessage(msg, type = 'info', timeout = 4000) {
-            const m = document.createElement('div');
-            m.className = 'message ' + (type === 'error' ? 'error' : 'info');
-            m.textContent = msg;
-            const container = el('#messages');
-            container.appendChild(m);
-            setTimeout(() => m.remove(), timeout);
+            const d = document.createElement('div');
+            d.className = 'message ' + (type === 'error' ? 'error' : 'info');
+            d.textContent = msg;
+            el('#messages').appendChild(d);
+            setTimeout(() => d.remove(), timeout);
         }
         function clearMessages() { el('#messages').innerHTML = '' }
+
         function setActiveTab(name) {
             state.resource = name;
             els('.tab').forEach(t => t.classList.toggle('active', t.dataset.resource === name));
@@ -366,64 +297,60 @@
             loadList();
         }
 
-        /* Helper: tenta extrair o valor "mais provável" a exibir para um campo.
-           - Se existir item[f.name] e for primitivo -> retorna.
-           - Se for objeto, tenta encontrar item[f.name].nome (mas evita mostrar curso.nome
-             quando estamos na coluna "nome" e o objeto é um curso).
-           - Se o campo esperado (ex: 'nome') não existir, tenta chaves alternativas comuns:
-             ['nome','name','fullName','nomeCompleto','alunoNome'].
+        /* ===== robust getDisplayValue =====
+           - For 'alunos' we return explicit fields only (no fallback into cursos).
+           - Generic behavior for other resources: primitive => string, array => join nomes (only when field is array),
+             object => obj.nome || obj.name || JSON.
         */
         function getDisplayValue(item, field) {
-            const key = field.name;
+            if (!item) return '';
 
-            // --- Regras especiais para ALUNOS ---
-            if (state.resource === "alunos") {
-                if (key === "nome") return item.nome ?? "";
-                if (key === "email") return item.email ?? "";
-                if (key === "sexo") return item.sexo ?? "";
-                if (key === "id") return item.id ?? "";
-                // nunca usar cursos para nenhum desses
+            // Explicit behavior for ALUNOS to avoid any fallback that picks cursos' nomes
+            if (state.resource === 'alunos') {
+                const k = field.name;
+                if (k === 'id') return item.id ?? '';
+                if (k === 'nome') return item.nome ?? '';
+                if (k === 'email') return item.email ?? '';
+                if (k === 'sexo') return item.sexo ?? '';
+                // if other fields requested, just try direct property
+                const direct = item[field.name];
+                if (typeof direct === 'string' || typeof direct === 'number' || typeof direct === 'boolean') return String(direct);
+                if (Array.isArray(direct)) return direct.map(x => (x && (x.nome || x.name)) ? (x.nome || x.name) : JSON.stringify(x)).join(', ');
+                if (typeof direct === 'object' && direct !== null) return direct.nome ?? direct.name ?? JSON.stringify(direct);
+                return '';
             }
 
-            // ---------- Comportamento genérico para outros recursos ----------
-
-            const val = item ? item[key] : undefined;
-
-            if (val === null || val === undefined)
-                return "";
-
-            if (typeof val === "string" || typeof val === "number" || typeof val === "boolean")
-                return String(val);
-
+            // Generic fallback for other resources:
+            const val = item[field.name];
+            if (val === null || val === undefined) return '';
+            if (typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean') return String(val);
             if (Array.isArray(val)) {
-                // exibir cursos, disciplinas etc como lista
-                return val.map(v => (typeof v === "object" && v.nome ? v.nome : "")).join(", ");
+                return val.map(v => {
+                    if (v === null || v === undefined) return '';
+                    if (typeof v === 'string' || typeof v === 'number') return String(v);
+                    if (typeof v === 'object') return v.nome ?? v.name ?? JSON.stringify(v);
+                    return '';
+                }).filter(Boolean).join(', ');
             }
-
-            if (typeof val === "object") {
-                if (val.nome) return val.nome;
-                if (val.name) return val.name;
-                return JSON.stringify(val);
+            if (typeof val === 'object') {
+                return val.nome ?? val.name ?? JSON.stringify(val);
             }
-
             return String(val);
         }
 
+        function escapeHTML(s) { return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
         function buildListHTML(items) {
             const cfg = resources[state.resource];
-            if (!items || items.length === 0) {
-                return `<div class="hint">Nenhum ${cfg.label.toLowerCase()} encontrado.</div>`;
-            }
+            if (!items || items.length === 0) return `<div class="small">Nenhum ${cfg.label.toLowerCase()} encontrado.</div>`;
             let html = `<table><thead><tr>`;
-            cfg.fields.forEach(f => { if (f.name !== 'professorId') html += `<th>${f.label}</th>`; });
+            cfg.fields.forEach(f => html += `<th>${f.label}</th>`);
             html += `<th>Ações</th></tr></thead><tbody>`;
             items.forEach(it => {
                 html += `<tr>`;
                 cfg.fields.forEach(f => {
-                    if (f.name === 'professorId') return;
-                    const display = getDisplayValue(it, f);
-                    html += `<td>${escapeHTML(display)}</td>`;
+                    const v = getDisplayValue(it, f);
+                    html += `<td>${escapeHTML(v)}</td>`;
                 });
                 html += `<td class="actions">
       <button class="ghost" data-action="view" data-id="${it.id}">Ver</button>
@@ -435,58 +362,21 @@
             return html;
         }
 
-        function renderList() {
-            const section = el('#listSection');
-            section.innerHTML = '';
-            const cfg = resources[state.resource];
-            const header = document.createElement('div');
-            header.style.display = 'flex';
-            header.style.alignItems = 'center';
-            header.style.justifyContent = 'space-between';
-            header.style.marginBottom = '8px';
-            header.innerHTML = `<div style="display:flex;gap:12px;align-items:center">
-      <div class="badge">${cfg.label}</div>
-      <div class="small muted">Registros: ${state.list.length}</div>
-    </div>
-    <div class="small muted">API: ${cfg.path}</div>`;
-            section.appendChild(header);
-
-            const listWrap = document.createElement('div');
-            listWrap.innerHTML = buildListHTML(state.list);
-            section.appendChild(listWrap);
-
-            listWrap.querySelectorAll('button[data-action]').forEach(btn => {
-                btn.addEventListener('click', async (ev) => {
-                    const act = btn.dataset.action;
-                    const id = btn.dataset.id;
-                    if (act === 'view') return viewItem(id);
-                    if (act === 'edit') return editItem(id);
-                    if (act === 'delete') {
-                        if (!confirm('Confirma exclusão?')) return;
-                        await deleteItem(id);
-                    }
-                });
-            });
-        }
-
-        function escapeHTML(s) { return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-
-        async function apiFetch(path, options = {}) {
+        /* ===== API helpers ===== */
+        async function apiFetch(path, opts = {}) {
             const url = BASE + path;
             try {
-                const resp = await fetch(url, Object.assign({
-                    headers: { 'Accept': 'application/json' },
-                }, options));
+                const resp = await fetch(url, Object.assign({ headers: { 'Accept': 'application/json' } }, opts));
                 if (resp.status === 204) return null;
                 const text = await resp.text();
                 try {
                     const json = text ? JSON.parse(text) : null;
                     if (!resp.ok) {
-                        const msg = (typeof json === 'string' ? json : (json && json.message) ? json.message : `HTTP ${resp.status}`);
+                        const msg = (json && json.message) ? json.message : `HTTP ${resp.status}`;
                         throw new Error(msg);
                     }
                     return json;
-                } catch (parseErr) {
+                } catch (e) {
                     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                     return text;
                 }
@@ -498,36 +388,63 @@
         async function loadList() {
             clearMessages();
             const cfg = resources[state.resource];
-            showMessage('Carregando ' + cfg.label + '...', 'info', 1000);
+            showMessage('Carregando ' + cfg.label + '...', 'info', 800);
             try {
                 const q = el('#searchInput').value.trim();
-                const sort = el('#sortSelect').value || 'id';
                 let url = cfg.path;
-                if (q) {
-                    url = cfg.searchPath + '?q=' + encodeURIComponent(q) + '&page=1&size=' + state.size + '&sort=' + encodeURIComponent(sort);
-                }
+                if (q) url = cfg.searchPath + '?q=' + encodeURIComponent(q) + '&page=1&size=' + state.size;
                 const data = await apiFetch(url, { method: 'GET' });
                 let items = [];
-                if (Array.isArray(data)) {
-                    if (data.length > 0 && data[0].cursos) {
-                        if (Array.isArray(data[0].cursos)) items = data[0].cursos;
-                    } else {
-                        items = data;
-                    }
-                } else if (data && (data.cursos || data.alunos || data.disciplinas || data.professores)) {
-                    items = data.cursos || data.alunos || data.disciplinas || data.professores;
-                } else if (data) {
-                    items = Array.isArray(data) ? data : [data];
-                } else {
-                    items = [];
-                }
+                if (Array.isArray(data)) items = data;
+                else if (data && (data[cfg.label.toLowerCase()] || data.items)) items = data[cfg.label.toLowerCase()] || data.items;
+                else if (data) items = Array.isArray(data) ? data : [data];
                 state.list = items;
                 renderList();
-                showMessage('Dados carregados', 'info', 1100);
+                showMessage('Dados carregados', 'info', 900);
             } catch (err) {
                 console.error(err);
-                showMessage('Erro ao carregar: ' + err.message, 'error', 6000);
+                showMessage('Erro ao carregar: ' + err.message, 'error', 5000);
             }
+        }
+
+        function renderList() {
+            const section = el('#listSection');
+            section.innerHTML = '';
+            const cfg = resources[state.resource];
+            const header = document.createElement('div');
+            header.style.display = 'flex'; header.style.justifyContent = 'space-between'; header.style.marginBottom = '8px';
+            header.innerHTML = `<div style="display:flex;gap:12px;align-items:center"><div class="small" style="background:var(--glass);padding:6px 10px;border-radius:8px">${cfg.label}</div>
+    <div class="small" style="color:var(--muted)">Registros: ${state.list.length}</div></div><div class="small" style="color:var(--muted)">API: ${cfg.path}</div>`;
+            section.appendChild(header);
+            const wrap = document.createElement('div');
+            wrap.innerHTML = buildListHTML(state.list);
+            section.appendChild(wrap);
+
+            wrap.querySelectorAll('button[data-action]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const act = btn.dataset.action, id = btn.dataset.id;
+                    if (act === 'view') return viewItem(id);
+                    if (act === 'edit') return editItem(id);
+                    if (act === 'delete') { if (!confirm('Confirma exclusão?')) return; await deleteItem(id); }
+                });
+            });
+        }
+
+        /* ===== CRUD UI (minimal) ===== */
+        function buildFormFields(item = {}) {
+            const cfg = resources[state.resource];
+            const w = el('#formFields'); w.innerHTML = '';
+            cfg.fields.forEach(f => {
+                const row = document.createElement('div'); row.style.display = 'grid'; row.style.gap = '6px';
+                const label = document.createElement('label'); label.className = 'small'; label.textContent = f.label + (f.required ? ' *' : '');
+                row.appendChild(label);
+                if (f.type === 'textarea') {
+                    const ta = document.createElement('textarea'); ta.name = f.name; ta.rows = 3; ta.value = item[f.name] ?? ''; row.appendChild(ta);
+                } else {
+                    const inp = document.createElement('input'); inp.name = f.name; inp.type = f.type === 'number' ? 'number' : 'text'; inp.value = item[f.name] ?? ''; if (f.readOnly) inp.readOnly = true; row.appendChild(inp);
+                }
+                w.appendChild(row);
+            });
         }
 
         async function viewItem(id) {
@@ -535,78 +452,17 @@
             const cfg = resources[state.resource];
             try {
                 const data = await apiFetch(cfg.path + '/' + encodeURIComponent(id), { method: 'GET' });
-                state.editing = null;
+                const item = Array.isArray(data) ? data[0] : data;
                 el('#formSection').style.display = 'block';
                 el('#formTitle').textContent = 'Visualizar ' + cfg.label.slice(0, -1);
-                const fieldsWrap = el('#formFields');
-                fieldsWrap.innerHTML = '';
-                const item = Array.isArray(data) ? data[0] : data;
+                const wrap = el('#formFields'); wrap.innerHTML = '';
                 cfg.fields.forEach(f => {
-                    const val = getDisplayValue(item, f);
-                    const row = document.createElement('div');
-                    row.innerHTML = `<label class="small">${f.label}</label><div class="muted">${escapeHTML(String(val === undefined || val === null ? '' : val))}</div>`;
-                    fieldsWrap.appendChild(row);
+                    const lbl = document.createElement('div'); lbl.className = 'small'; lbl.textContent = f.label;
+                    const val = document.createElement('div'); val.className = 'small'; val.style.color = 'var(--muted)'; val.textContent = getDisplayValue(item, f);
+                    wrap.appendChild(lbl); wrap.appendChild(val);
                 });
                 el('#saveBtn').style.display = 'none';
-            } catch (err) {
-                showMessage('Erro ao buscar item: ' + err.message, 'error', 5000);
-            }
-        }
-
-        function buildFormFields(item = null) {
-            const cfg = resources[state.resource];
-            const wrap = el('#formFields');
-            wrap.innerHTML = '';
-            cfg.fields.forEach(f => {
-                const v = item && item[f.name] !== undefined ? item[f.name] : (f.default || '');
-                const fieldRow = document.createElement('div');
-                fieldRow.style.display = 'grid';
-                fieldRow.style.gridTemplateColumns = '1fr';
-                fieldRow.style.gap = '6px';
-                const label = document.createElement('label');
-                label.textContent = f.label + (f.required ? ' *' : '');
-                label.className = 'small';
-                fieldRow.appendChild(label);
-
-                if (f.type === 'textarea') {
-                    const ta = document.createElement('textarea');
-                    ta.name = f.name;
-                    ta.rows = 3;
-                    ta.value = v || '';
-                    if (f.readOnly) ta.readOnly = true;
-                    fieldRow.appendChild(ta);
-                } else if (f.type === 'select') {
-                    const s = document.createElement('select');
-                    s.name = f.name;
-                    (f.options || []).forEach(opt => {
-                        const o = document.createElement('option');
-                        o.value = opt;
-                        o.textContent = opt;
-                        if (String(v) === String(opt)) o.selected = true;
-                        s.appendChild(o);
-                    });
-                    if (f.readOnly) s.disabled = true;
-                    fieldRow.appendChild(s);
-                } else {
-                    const inp = document.createElement('input');
-                    inp.type = f.type === 'number' ? 'number' : 'text';
-                    inp.name = f.name;
-                    inp.value = (v === null || v === undefined) ? '' : v;
-                    if (f.readOnly) inp.readOnly = true;
-                    if (f.min !== undefined) inp.min = f.min;
-                    if (f.max !== undefined) inp.max = f.max;
-                    fieldRow.appendChild(inp);
-                }
-                wrap.appendChild(fieldRow);
-            });
-        }
-
-        function newItem() {
-            state.editing = null;
-            el('#formSection').style.display = 'block';
-            el('#formTitle').textContent = 'Novo ' + resources[state.resource].label.slice(0, -1);
-            buildFormFields({});
-            el('#saveBtn').style.display = 'inline-block';
+            } catch (err) { showMessage('Erro: ' + err.message, 'error'); }
         }
 
         async function editItem(id) {
@@ -618,13 +474,9 @@
                 state.editing = item;
                 el('#formSection').style.display = 'block';
                 el('#formTitle').textContent = 'Editar ' + cfg.label.slice(0, -1);
-                const flat = Object.assign({}, item);
-                if (item && item.professor && item.professor.id) flat.professorId = item.professor.id;
-                buildFormFields(flat);
+                buildFormFields(item);
                 el('#saveBtn').style.display = 'inline-block';
-            } catch (err) {
-                showMessage('Erro ao buscar item: ' + err.message, 'error', 5000);
-            }
+            } catch (err) { showMessage('Erro: ' + err.message, 'error'); }
         }
 
         async function deleteItem(id) {
@@ -632,97 +484,46 @@
             const cfg = resources[state.resource];
             try {
                 await apiFetch(cfg.path + '/' + encodeURIComponent(id), { method: 'DELETE' });
-                showMessage('Excluído com sucesso', 'info', 2500);
+                showMessage('Excluído', 'info');
                 loadList();
-            } catch (err) {
-                showMessage('Erro ao excluir: ' + err.message, 'error', 6000);
-            }
+            } catch (err) { showMessage('Erro: ' + err.message, 'error'); }
         }
 
-        async function submitForm(ev) {
-            ev.preventDefault();
-            clearMessages();
+        async function submitForm(e) {
+            e.preventDefault(); clearMessages();
             const cfg = resources[state.resource];
-            const form = new FormData(el('#resourceForm'));
+            const fd = new FormData(el('#resourceForm'));
             const payload = {};
             cfg.fields.forEach(f => {
                 if (f.readOnly) return;
-                const val = form.get(f.name);
-                if (val === null) return;
-                if (f.type === 'number') {
-                    const num = val === '' ? null : Number(val);
-                    if (num !== null && !isFinite(num)) return;
-                    payload[f.name] = num;
-                } else {
-                    payload[f.name] = val;
-                }
+                const v = fd.get(f.name);
+                if (v === null) return;
+                payload[f.name] = f.type === 'number' ? (v === '' ? null : Number(v)) : v;
             });
-
-            if (payload.professorId !== undefined) {
-                const pid = payload.professorId;
-                if (pid === '' || pid === null) delete payload.professorId;
-                else {
-                    payload.professor = { id: Number(pid) };
-                    delete payload.professorId;
-                }
-            }
-
-            for (const f of cfg.fields) {
-                if (f.required && !payload[f.name] && payload[f.name] !== 0) {
-                    if (f.name === 'sexo' && form.get('sexo')) continue;
-                    if (f.name === 'professorId') continue;
-                    showMessage('Campo obrigatório: ' + f.label, 'error', 4000);
-                    return;
-                }
-                if (f.min && payload[f.name] && String(payload[f.name]).length < f.min) {
-                    showMessage(`${f.label} deve ter ao menos ${f.min} caracteres`, 'error', 4000);
-                    return;
-                }
-            }
 
             try {
                 if (state.editing && state.editing.id) {
-                    const id = state.editing.id;
-                    await apiFetch(cfg.path + '/' + encodeURIComponent(id), {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    showMessage('Atualizado com sucesso', 'info', 2200);
+                    await apiFetch(cfg.path + '/' + encodeURIComponent(state.editing.id), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    showMessage('Atualizado', 'info');
                 } else {
-                    await apiFetch(cfg.path, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    showMessage('Criado com sucesso', 'info', 2200);
+                    await apiFetch(cfg.path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    showMessage('Criado', 'info');
                 }
                 el('#formSection').style.display = 'none';
                 state.editing = null;
                 loadList();
-            } catch (err) {
-                showMessage('Erro ao salvar: ' + err.message, 'error', 6000);
-            }
+            } catch (err) { showMessage('Erro ao salvar: ' + err.message, 'error'); }
         }
 
+        /* ===== Wire UI ===== */
         document.addEventListener('DOMContentLoaded', () => {
-            els('.tab').forEach(t => {
-                t.addEventListener('click', () => setActiveTab(t.dataset.resource));
-            });
-
+            els('.tab').forEach(t => t.addEventListener('click', () => setActiveTab(t.dataset.resource)));
             el('#searchBtn').addEventListener('click', () => loadList());
             el('#refreshBtn').addEventListener('click', () => loadList());
-            el('#newBtn').addEventListener('click', () => newItem());
-            el('#cancelBtn').addEventListener('click', () => {
-                el('#formSection').style.display = 'none';
-                state.editing = null;
-            });
+            el('#newBtn').addEventListener('click', () => { state.editing = null; el('#formSection').style.display = 'block'; el('#formTitle').textContent = 'Novo ' + resources[state.resource].label.slice(0, -1); buildFormFields({}); el('#saveBtn').style.display = 'inline-block'; });
+            el('#cancelBtn').addEventListener('click', () => { el('#formSection').style.display = 'none'; state.editing = null; });
             el('#resourceForm').addEventListener('submit', submitForm);
-
-            el('#searchInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') { e.preventDefault(); loadList(); }
-            });
-
+            el('#searchInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); loadList(); } });
             loadList();
         });
     </script>
