@@ -375,68 +375,40 @@
         */
         function getDisplayValue(item, field) {
             const key = field.name;
+
+            // --- Regras especiais para ALUNOS ---
+            if (state.resource === "alunos") {
+                if (key === "nome") return item.nome ?? "";
+                if (key === "email") return item.email ?? "";
+                if (key === "sexo") return item.sexo ?? "";
+                if (key === "id") return item.id ?? "";
+                // nunca usar cursos para nenhum desses
+            }
+
+            // ---------- Comportamento genérico para outros recursos ----------
+
             const val = item ? item[key] : undefined;
 
-            // primitive (string/number/boolean)
-            if (val === null || val === undefined) {
-                // try alternative name keys (common variations) when looking for "nome"
-                const altNameKeys = ['nome', 'name', 'fullName', 'nomeCompleto', 'alunoNome', 'nomeAluno'];
-                if (key === 'nome' || key.toLowerCase().includes('nome') || key.toLowerCase().includes('name')) {
-                    for (const k of altNameKeys) {
-                        if (item && item[k] !== undefined && item[k] !== null && typeof item[k] !== 'object') {
-                            return String(item[k]);
-                        }
-                    }
-                }
-                // fallback: look for first string property on item (useful if API returns different shape)
-                if (item && typeof item === 'object') {
-                    for (const k of Object.keys(item)) {
-                        if (typeof item[k] === 'string' && item[k].trim().length > 0) {
-                            // avoid returning "nome" of a related object like curso if there is an explicit student name elsewhere
-                            // prefer keys that suggest person: nome, name, fullName, etc.
-                            if (['nome', 'name', 'fullName', 'nomeCompleto', 'alunoNome', 'nomeAluno'].includes(k)) return String(item[k]);
-                        }
-                    }
-                }
-                return '';
-            }
-            // if primitive return safely
-            if (typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean') {
+            if (val === null || val === undefined)
+                return "";
+
+            if (typeof val === "string" || typeof val === "number" || typeof val === "boolean")
                 return String(val);
+
+            if (Array.isArray(val)) {
+                // exibir cursos, disciplinas etc como lista
+                return val.map(v => (typeof v === "object" && v.nome ? v.nome : "")).join(", ");
             }
-            // val is an object/array
-            if (typeof val === 'object') {
-                // if it's an array, try to join names
-                if (Array.isArray(val)) {
-                    const parts = val.map(v => {
-                        if (v === null || v === undefined) return '';
-                        if (typeof v === 'string' || typeof v === 'number') return String(v);
-                        if (typeof v === 'object' && v.nome) return String(v.nome);
-                        if (typeof v === 'object' && v.name) return String(v.name);
-                        return '';
-                    }).filter(Boolean);
-                    return parts.join(', ');
-                }
-                // object: common pattern is { nome: 'X' } or { id:..., nome:... }
-                // But: avoid showing related 'curso.nome' when we are trying to show aluno.nome.
-                // Heuristic: if current resource is 'alunos' and key is 'nome' but val looks like a course
-                // (has fields like 'sigla' or 'codigo' or 'descricao'), prefer to find student name elsewhere.
-                const lowerKeys = Object.keys(val).map(k => k.toLowerCase());
-                const looksLikeCourse = ['curso', 'carga', 'sigla', 'codigo', 'descricao', 'area'].some(k => lowerKeys.includes(k) || Object.keys(val).join(' ').toLowerCase().includes(k));
-                if (field.name === 'nome' && looksLikeCourse) {
-                    // try to find student's name on the parent item
-                    const altNameKeys = ['nome', 'name', 'fullName', 'nomeCompleto', 'alunoNome', 'nomeAluno'];
-                    for (const k of altNameKeys) {
-                        if (item && item[k] && typeof item[k] !== 'object') return String(item[k]);
-                    }
-                }
-                if (val.nome) return String(val.nome);
-                if (val.name) return String(val.name);
-                // final fallback: JSON
-                try { return JSON.stringify(val); } catch (e) { return String(val); }
+
+            if (typeof val === "object") {
+                if (val.nome) return val.nome;
+                if (val.name) return val.name;
+                return JSON.stringify(val);
             }
+
             return String(val);
         }
+
 
         function buildListHTML(items) {
             const cfg = resources[state.resource];
